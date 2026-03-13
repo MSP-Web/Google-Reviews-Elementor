@@ -36,16 +36,12 @@ defined( 'ABSPATH' ) || exit;
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $text_data['full'];
 	?></span>
-	<div class="msp-read-more-row">
-		<button type="button"
-			class="msp-read-more-toggle"
-			aria-expanded="false"
-			data-more-label="<?php esc_attr_e( 'Read more', 'msp-google-reviews' ); ?>"
-			data-less-label="<?php esc_attr_e( 'Show less', 'msp-google-reviews' ); ?>"
-		>
-			<?php esc_html_e( 'Read more', 'msp-google-reviews' ); ?>
-		</button>
-	</div>
+	<a href="#"
+		class="msp-read-more-toggle"
+		aria-expanded="false"
+		data-more-label="<?php esc_attr_e( 'Read more', 'msp-google-reviews' ); ?>"
+		data-less-label="<?php esc_attr_e( 'Show less', 'msp-google-reviews' ); ?>"
+	><?php esc_html_e( 'Read more', 'msp-google-reviews' ); ?></a>
 	<?php else : ?>
 	<span class="msp-review-text-full"><?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

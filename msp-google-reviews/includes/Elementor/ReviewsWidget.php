@@ -461,7 +461,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'default'   => 'left',
 				'toggle'    => false,
 				'selectors' => [
-					'{{WRAPPER}} .msp-review-card__text, {{WRAPPER}} .msp-read-more-row' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .msp-review-card__text' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -510,6 +510,33 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#cccccc',
 				'selectors' => [ '{{WRAPPER}} .msp-star--empty' => 'color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'star_alignment',
+			[
+				'label'   => __( 'Star Alignment', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'left'   => [
+						'title' => __( 'Left', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right'  => [
+						'title' => __( 'Right', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'left',
+				'toggle'    => false,
+				'selectors' => [
+					'{{WRAPPER}} .msp-review-card__stars' => 'text-align: {{VALUE}};',
+				],
 			]
 		);
 
@@ -778,8 +805,8 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'size_units' => [ 'px' ],
 				'range'      => [
 					'px' => [
-						'min' => -40,
-						'max' => 30,
+						'min' => -120,
+						'max' => 60,
 					],
 				],
 				'selectors'  => [

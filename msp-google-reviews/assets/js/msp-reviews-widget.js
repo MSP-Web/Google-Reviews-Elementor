@@ -112,7 +112,9 @@
 
 	function initReadMore( widget ) {
 		widget.querySelectorAll( '.msp-read-more-toggle' ).forEach( function ( btn ) {
-			btn.addEventListener( 'click', function () {
+			btn.addEventListener( 'click', function ( e ) {
+				e.preventDefault();
+
 				var card      = btn.closest( '.msp-review-card__text' );
 				var shortText = card.querySelector( '.msp-review-text-short' );
 				var fullText  = card.querySelector( '.msp-review-text-full' );

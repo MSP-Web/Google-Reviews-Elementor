@@ -72,10 +72,6 @@
 	margin-bottom: 14px;
 }
 
-.msp-read-more-row {
-	margin-top: 8px;
-}
-
 .msp-read-more-toggle {
 	display: inline;
 	background: none;
@@ -83,13 +79,15 @@
 	color: #5f6b7a;
 	cursor: pointer;
 	font-size: 12px;
-	padding: 0;
+	padding: 0 0 0 6px;
 	margin: 0;
 	text-decoration: underline;
 	text-underline-offset: 2px;
 	appearance: none;
 	-webkit-appearance: none;
 	font-weight: 400;
+	line-height: inherit;
+	vertical-align: baseline;
 }
 
 .msp-read-more-toggle:hover {
