@@ -4,8 +4,9 @@
  * Handles location search and binding inside the Elementor editor panel.
  *
  * Approach:
- *   1. $(document).on() delegation — attached immediately, unconditionally.
- *      Works regardless of when the panel renders or when Elementor initializes.
+ *   1. Native capture-phase click handling + $(document).on() delegation.
+ *      Works regardless of when the panel renders or when Elementor initializes,
+ *      and capture mode runs before Elementor bubble handlers.
  *   2. elementor.hooks (panel/open_editor) — additional targeted binding once
  *      Elementor is ready, gives us direct panel + model access.
  *
@@ -19,13 +20,12 @@
 ( function ( $ ) {
 	'use strict';
 
-	// =========================================================================
-	// Path 1: Global event delegation — always active from script load
-	// =========================================================================
-
-	$( document ).on( 'click', '.msp-do-search', function ( e ) {
+	function runSearchFromClick( e, $btn, $scope, model ) {
 		e.preventDefault();
 		e.stopPropagation();
+		if ( typeof e.stopImmediatePropagation === 'function' ) {
+			e.stopImmediatePropagation();
+		}
 
 		var config = window.mspGoogleReviewsEditor || {};
 
@@ -34,6 +34,37 @@
 			return;
 		}
 
+		doSearch( $btn, $scope, model, config );
+	}
+
+	// =========================================================================
+	// Path 1: Capture + delegation — always active from script load
+	// =========================================================================
+
+	// Capture-phase handler fires before Elementor bubble handlers.
+	document.addEventListener(
+		'click',
+		function ( e ) {
+			if ( ! e.target || typeof e.target.closest !== 'function' ) {
+				return;
+			}
+			var btnEl = e.target.closest( '.msp-do-search' );
+			if ( ! btnEl ) {
+				return;
+			}
+
+			var $btn   = $( btnEl );
+			var $scope = $btn.closest( '#elementor-panel, .elementor-panel' );
+			if ( ! $scope.length ) {
+				$scope = $( document );
+			}
+
+			runSearchFromClick( e, $btn, $scope, null );
+		},
+		true
+	);
+
+	$( document ).on( 'click', '.msp-do-search', function ( e ) {
 		var $btn   = $( this );
 		// Walk up to the nearest panel container; fall back to document if not found
 		var $scope = $btn.closest( '#elementor-panel, .elementor-panel' );
@@ -41,7 +72,7 @@
 			$scope = $( document );
 		}
 
-		doSearch( $btn, $scope, null, config );
+		runSearchFromClick( e, $btn, $scope, null );
 	} );
 
 	// =========================================================================
@@ -62,16 +93,7 @@
 				$panel.off( 'click.mspDoSearch', '.msp-do-search' );
 
 				$panel.on( 'click.mspDoSearch', '.msp-do-search', function ( e ) {
-					e.preventDefault();
-					e.stopPropagation();
-
-					var config = window.mspGoogleReviewsEditor || {};
-					if ( ! config.ajaxUrl ) {
-						window.console && console.warn( '[MSP Reviews] mspGoogleReviewsEditor config not found.' );
-						return;
-					}
-
-					doSearch( $( this ), $panel, model, config );
+					runSearchFromClick( e, $( this ), $panel, model );
 				} );
 			}
 		);
