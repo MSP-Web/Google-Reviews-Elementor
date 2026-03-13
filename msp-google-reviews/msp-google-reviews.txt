@@ -1,0 +1,164 @@
+Plugin Name:    MSP Google Reviews Widget
+Plugin Slug:    msp-google-reviews
+Version:        1.0.0
+Author:         Joshua Garza
+Organization:   MSP WebOps
+Requires WP:    6.0
+Requires PHP:   8.0
+Text Domain:    msp-google-reviews
+Namespace:      MSPGoogleReviews
+License:        Proprietary — Internal Use Only
+
+================================================================================
+DESCRIPTION
+================================================================================
+
+MSP Google Reviews Widget is a production-ready WordPress plugin that provides
+a custom Elementor widget for displaying Google Business reviews.
+
+The plugin replaces third-party review widget providers (e.g. Elfsight) with an
+internally controlled display system. Reviews are fetched from the Google Places
+API and stored in custom WordPress database tables. The Elementor widget renders
+only from this locally cached data and never calls the Google API during page
+rendering.
+
+Design philosophy: Ingest full, render partial.
+
+================================================================================
+DATABASE TABLES
+================================================================================
+
+wp_msp_google_review_locations
+  - Stores Google Business location metadata, aggregate ratings, sync status
+
+wp_msp_google_review_reviews
+  - Stores individual review records, canonical author data, review text,
+    ratings, sync state, and optional raw API payload for traceability
+
+================================================================================
+CRON SCHEDULE
+================================================================================
+
+Hook:      msp_google_reviews_daily_sync
+Frequency: Once every 24 hours (WordPress 'daily' schedule)
+Purpose:   Automatically refreshes review data for all saved locations
+
+================================================================================
+SETUP INSTRUCTIONS
+================================================================================
+
+1. Install and activate the plugin via WordPress admin > Plugins > Add New
+
+2. Go to Google Reviews > Settings and enter your Google Places API key.
+   The API key must have the Places API enabled in Google Cloud Console.
+
+3. Edit any Elementor page and drag the "MSP Google Reviews" widget onto
+   the canvas.
+
+4. In the widget settings panel:
+   a. Enter a business name or address in the Location Search field
+   b. Click "Search" — matching locations will appear
+   c. Click the correct result to bind it
+   d. The plugin will fetch and store reviews automatically
+
+5. Configure display options: review count, star filters, keywords, carousel
+   settings, CTA buttons, and styling.
+
+================================================================================
+ADMIN PAGES
+================================================================================
+
+Google Reviews > Settings
+  - Configure Google Places API key
+  - Set uninstall data policy
+
+Google Reviews > Locations
+  - View all saved locations
+  - Monitor sync status and last sync timestamps
+  - Trigger manual review refresh
+  - Delete locations (reviews are marked inactive, not hard-deleted)
+
+================================================================================
+SECURITY NOTES
+================================================================================
+
+- All admin and AJAX endpoints enforce capability checks via CapabilityService
+- All form submissions require nonce validation
+- All output is properly escaped (esc_html, esc_attr, esc_url)
+- Review text is always rendered as plain escaped text — never as HTML
+- User-configurable URLs are validated against an allowed scheme list
+  (https and http only — javascript:, data:, vbscript: are rejected)
+- Reviewer full names and profile photos are stored canonically but never
+  rendered publicly — only initials are displayed
+- Raw API payloads are stored for traceability but never rendered
+- Sync error messages are admin-only diagnostic data, never shown publicly
+- The Elementor widget never calls Google APIs during page rendering
+
+================================================================================
+ANALYTICS READINESS
+================================================================================
+
+The plugin schema preserves canonical review data for future export:
+  - relative_time_description  (source-faithful human timestamp)
+  - author_profile_photo_url   (canonical — never rendered)
+  - author_name                (canonical — never rendered publicly)
+  - raw_payload                (full API JSON for audit/traceability)
+  - source_last_seen_at        (stale record traceability)
+  - review_identifier          (stable reconciliation anchor)
+
+BigQuery synchronization is not implemented in v1. The schema is export-ready.
+
+================================================================================
+UNINSTALL BEHAVIOR
+================================================================================
+
+Default behavior (safe):
+  - Removes scheduled cron event
+  - Removes all plugin options from wp_options
+  - Retains custom database tables (prevents accidental data loss)
+
+Optional full cleanup:
+  - Enable "Delete all plugin data on uninstall" in Settings
+  - Tables will be dropped when the plugin is deleted
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+msp-google-reviews/
+├── msp-google-reviews.php          Main plugin file
+├── msp-google-reviews.txt          This file
+├── README.md                       Setup guide
+├── uninstall.php                   Uninstall routine
+├── includes/
+│   ├── Bootstrap.php               Hook registration and service wiring
+│   ├── Activator.php               Activation, deactivation, cron setup
+│   ├── API/GooglePlacesClient.php  Google Places API communication
+│   ├── Repository/
+│   │   ├── LocationRepository.php  Locations table access
+│   │   └── ReviewRepository.php    Reviews table access
+│   ├── Service/
+│   │   ├── CapabilityService.php   Centralized capability policy
+│   │   ├── ReviewSyncService.php   Sync orchestration
+│   │   ├── ReviewFilterService.php Non-destructive filtering pipeline
+│   │   └── PresenterService.php    Privacy transforms + output escaping
+│   ├── Admin/
+│   │   ├── AdminController.php     Admin menu registration
+│   │   ├── SettingsPage.php        API key configuration
+│   │   └── LocationsPage.php       Location management UI
+│   ├── Elementor/ReviewsWidget.php Elementor widget
+│   ├── Schema/SchemaInstaller.php  Database schema installer
+│   └── AJAX/
+│       ├── SearchPlacesHandler.php Place search AJAX endpoint
+│       └── RefreshHandler.php      Manual sync AJAX endpoint
+├── templates/
+│   ├── widget/
+│   │   ├── carousel.php            Carousel render partial
+│   │   ├── review-card.php         Single review card
+│   │   └── summary-only.php        Fallback (no eligible reviews)
+│   └── admin/
+│       ├── settings-page.php       Settings form template
+│       └── locations-page.php      Locations management template
+└── assets/
+    ├── js/msp-reviews-widget.js    Carousel JS + editor location search
+    └── css/msp-reviews-widget.css  Widget and admin styles
