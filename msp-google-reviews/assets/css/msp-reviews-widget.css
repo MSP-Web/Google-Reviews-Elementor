@@ -95,9 +95,9 @@
 }
 
 .msp-review-card__author {
-	font-size: 13px;
-	color: #777777;
-	font-style: italic;
+	color: inherit;
+	text-align: inherit;
+	line-height: inherit;
 }
 
 /* ============================================================

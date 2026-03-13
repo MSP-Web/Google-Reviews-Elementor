@@ -435,7 +435,9 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'label'     => __( 'Text Color', 'msp-google-reviews' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#333333',
-				'selectors' => [ '{{WRAPPER}} .msp-review-card' => 'color: {{VALUE}};' ],
+				'selectors' => [
+					'{{WRAPPER}} .msp-review-card, {{WRAPPER}} .msp-review-card__author' => 'color: {{VALUE}};',
+				],
 			]
 		);
 
@@ -461,7 +463,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'default'   => 'left',
 				'toggle'    => false,
 				'selectors' => [
-					'{{WRAPPER}} .msp-review-card__text' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .msp-review-card__text, {{WRAPPER}} .msp-review-card__author' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -471,16 +473,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			[
 				'name'     => 'review_text_typography',
 				'label'    => __( 'Review Text Typography', 'msp-google-reviews' ),
-				'selector' => '{{WRAPPER}} .msp-review-card__text',
-			]
-		);
-
-		$this->add_group_control(
-			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name'     => 'review_initials_typography',
-				'label'    => __( 'Reviewer Initials Typography', 'msp-google-reviews' ),
-				'selector' => '{{WRAPPER}} .msp-review-card__author',
+				'selector' => '{{WRAPPER}} .msp-review-card__text, {{WRAPPER}} .msp-review-card__author',
 			]
 		);
 
