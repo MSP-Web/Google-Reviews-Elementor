@@ -80,35 +80,12 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		// Read-only display of the bound location name (set via JS after selection)
-		$this->add_control(
-			'location_display_name',
-			[
-				'label'       => __( 'Selected Location', 'msp-google-reviews' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'default'     => '',
-				'description' => __( 'Use the search below to find and bind a location.', 'msp-google-reviews' ),
-				'ai'          => [ 'active' => false ],
-			]
-		);
-
-		$this->add_control(
-			'location_display_address',
-			[
-				'label'   => __( 'Address', 'msp-google-reviews' ),
-				'type'    => \Elementor\Controls_Manager::TEXT,
-				'default' => '',
-				'ai'      => [ 'active' => false ],
-			]
-		);
-
-		// Search interface — populated and submitted via editor JS
+		// Search interface - populated and submitted via editor JS
 		$this->add_control(
 			'location_search_heading',
 			[
 				'label'     => __( 'Search for a Location', 'msp-google-reviews' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
 			]
 		);
 
@@ -139,6 +116,29 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			[
 				'type' => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'  => '<div class="msp-search-results-container"></div>',
+			]
+		);
+
+		// Read-only display of the bound location name (set via JS after selection)
+		$this->add_control(
+			'location_display_name',
+			[
+				'label'       => __( 'Selected Location', 'msp-google-reviews' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => '',
+				'description' => __( 'Use the search above to find and bind a location.', 'msp-google-reviews' ),
+				'ai'          => [ 'active' => false ],
+				'separator'   => 'before',
+			]
+		);
+
+		$this->add_control(
+			'location_display_address',
+			[
+				'label'   => __( 'Address', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => '',
+				'ai'      => [ 'active' => false ],
 			]
 		);
 
@@ -292,6 +292,18 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'show_dots',
+			[
+				'label'        => __( 'Show Dots', 'msp-google-reviews' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Show', 'msp-google-reviews' ),
+				'label_off'    => __( 'Hide', 'msp-google-reviews' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -305,6 +317,33 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			[
 				'label' => __( 'CTA Buttons', 'msp-google-reviews' ),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'cta_alignment',
+			[
+				'label'   => __( 'Button Alignment', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'flex-start' => [
+						'title' => __( 'Left', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center'     => [
+						'title' => __( 'Center', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'flex-end'   => [
+						'title' => __( 'Right', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'flex-start',
+				'toggle'    => false,
+				'selectors' => [
+					'{{WRAPPER}} .msp-cta-buttons' => 'justify-content: {{VALUE}}; align-items: {{VALUE}};',
+				],
 			]
 		);
 
@@ -373,6 +412,14 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'style_heading_cards',
+			[
+				'label' => __( 'Cards', 'msp-google-reviews' ),
+				'type'  => \Elementor\Controls_Manager::HEADING,
+			]
+		);
+
+		$this->add_control(
 			'card_background',
 			[
 				'label'     => __( 'Card Background', 'msp-google-reviews' ),
@@ -393,9 +440,63 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'review_text_align',
+			[
+				'label'   => __( 'Review Text Alignment', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'left'   => [
+						'title' => __( 'Left', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right'  => [
+						'title' => __( 'Right', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'left',
+				'toggle'    => false,
+				'selectors' => [
+					'{{WRAPPER}} .msp-review-card__text, {{WRAPPER}} .msp-read-more-row' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'review_text_typography',
+				'label'    => __( 'Review Text Typography', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-review-card__text',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'review_initials_typography',
+				'label'    => __( 'Reviewer Initials Typography', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-review-card__author',
+			]
+		);
+
+		$this->add_control(
+			'style_heading_stars',
+			[
+				'label'     => __( 'Rating Stars', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
 			'star_color',
 			[
-				'label'     => __( 'Star Color', 'msp-google-reviews' ),
+				'label'     => __( 'Filled Star Color', 'msp-google-reviews' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#F5A623',
 				'selectors' => [ '{{WRAPPER}} .msp-star--filled' => 'color: {{VALUE}};' ],
@@ -403,22 +504,373 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
-			'button_background',
+			'star_empty_color',
 			[
-				'label'     => __( 'Button Background', 'msp-google-reviews' ),
+				'label'     => __( 'Empty Star Color', 'msp-google-reviews' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
-				'default'   => '#4285F4',
-				'selectors' => [ '{{WRAPPER}} .msp-cta-btn' => 'background-color: {{VALUE}};' ],
+				'default'   => '#cccccc',
+				'selectors' => [ '{{WRAPPER}} .msp-star--empty' => 'color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_responsive_control(
+			'star_size',
+			[
+				'label'      => __( 'Star Size', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem' ],
+				'range'      => [
+					'px' => [
+						'min' => 10,
+						'max' => 48,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-stars' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'style_heading_meta',
+			[
+				'label'     => __( 'Meta Section', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'meta_align',
+			[
+				'label'   => __( 'Meta Alignment', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'flex-start' => [
+						'title' => __( 'Left', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center'     => [
+						'title' => __( 'Center', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'flex-end'   => [
+						'title' => __( 'Right', 'msp-google-reviews' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'flex-start',
+				'toggle'    => false,
+				'selectors' => [
+					'{{WRAPPER}} .msp-aggregate' => 'justify-content: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'meta_typography',
+				'label'    => __( 'Meta Typography', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-aggregate-rating, {{WRAPPER}} .msp-aggregate-label',
+			]
+		);
+
+		$this->add_control(
+			'meta_text_color',
+			[
+				'label'     => __( 'Meta Text Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#555555',
+				'selectors' => [
+					'{{WRAPPER}} .msp-aggregate-rating, {{WRAPPER}} .msp-aggregate-label' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'style_heading_cta',
+			[
+				'label'     => __( 'CTA Buttons', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'cta_typography',
+				'label'    => __( 'CTA Typography', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-cta-btn',
+			]
+		);
+
+		$this->start_controls_tabs( 'cta_button_tabs' );
+
+		$this->start_controls_tab(
+			'cta_button_tab_normal',
+			[
+				'label' => __( 'Normal', 'msp-google-reviews' ),
 			]
 		);
 
 		$this->add_control(
 			'button_text_color',
 			[
-				'label'     => __( 'Button Text Color', 'msp-google-reviews' ),
+				'label'     => __( 'Text Color', 'msp-google-reviews' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#ffffff',
 				'selectors' => [ '{{WRAPPER}} .msp-cta-btn' => 'color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'button_background',
+			[
+				'label'     => __( 'Background', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#4285F4',
+				'selectors' => [ '{{WRAPPER}} .msp-cta-btn' => 'background-color: {{VALUE}};' ],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'cta_button_tab_hover',
+			[
+				'label' => __( 'Hover', 'msp-google-reviews' ),
+			]
+		);
+
+		$this->add_control(
+			'button_text_color_hover',
+			[
+				'label'     => __( 'Text Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [ '{{WRAPPER}} .msp-cta-btn:hover, {{WRAPPER}} .msp-cta-btn:focus' => 'color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'button_background_hover',
+			[
+				'label'     => __( 'Background', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#2f6ed4',
+				'selectors' => [ '{{WRAPPER}} .msp-cta-btn:hover, {{WRAPPER}} .msp-cta-btn:focus' => 'background-color: {{VALUE}};' ],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name'     => 'cta_border',
+				'label'    => __( 'Border', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-cta-btn',
+			]
+		);
+
+		$this->add_responsive_control(
+			'cta_border_radius',
+			[
+				'label'      => __( 'Border Radius', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-cta-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cta_padding',
+			[
+				'label'      => __( 'Padding', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-cta-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'style_heading_read_more',
+			[
+				'label'     => __( 'Read More Link', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'read_more_typography',
+				'label'    => __( 'Read More Typography', 'msp-google-reviews' ),
+				'selector' => '{{WRAPPER}} .msp-read-more-toggle',
+			]
+		);
+
+		$this->add_control(
+			'read_more_color',
+			[
+				'label'     => __( 'Read More Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#5f6b7a',
+				'selectors' => [
+					'{{WRAPPER}} .msp-read-more-toggle' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'read_more_hover_color',
+			[
+				'label'     => __( 'Read More Hover Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#2f6ed4',
+				'selectors' => [
+					'{{WRAPPER}} .msp-read-more-toggle:hover, {{WRAPPER}} .msp-read-more-toggle:focus' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'style_heading_navigation',
+			[
+				'label'     => __( 'Navigation Arrows', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrow_size',
+			[
+				'label'      => __( 'Arrow Size', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 20,
+						'max' => 80,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; font-size: calc({{SIZE}}{{UNIT}} * 0.55);',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrow_offset',
+			[
+				'label'      => __( 'Arrow Horizontal Offset', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => -40,
+						'max' => 30,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-arrow--prev' => 'left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .msp-arrow--next' => 'right: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'arrow_color',
+			[
+				'label'     => __( 'Arrow Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#333333',
+				'selectors' => [ '{{WRAPPER}} .msp-arrow' => 'color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'arrow_background',
+			[
+				'label'     => __( 'Arrow Background', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(255, 255, 255, 0.9)',
+				'selectors' => [ '{{WRAPPER}} .msp-arrow' => 'background-color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'style_heading_dots',
+			[
+				'label'     => __( 'Pagination Dots', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'dot_size',
+			[
+				'label'      => __( 'Dot Size', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 4,
+						'max' => 20,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-dot' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'dot_spacing',
+			[
+				'label'      => __( 'Dot Spacing', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 20,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-dot' => 'margin-left: calc({{SIZE}}{{UNIT}} / 2); margin-right: calc({{SIZE}}{{UNIT}} / 2);',
+				],
+			]
+		);
+
+		$this->add_control(
+			'dot_color',
+			[
+				'label'     => __( 'Dot Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#cccccc',
+				'selectors' => [ '{{WRAPPER}} .msp-dot' => 'background-color: {{VALUE}};' ],
+			]
+		);
+
+		$this->add_control(
+			'dot_active_color',
+			[
+				'label'     => __( 'Active Dot Color', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#4285F4',
+				'selectors' => [ '{{WRAPPER}} .msp-dot--active' => 'background-color: {{VALUE}};' ],
 			]
 		);
 

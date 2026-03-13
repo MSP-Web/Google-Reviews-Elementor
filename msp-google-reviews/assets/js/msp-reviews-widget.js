@@ -121,12 +121,12 @@
 				if ( expanded ) {
 					shortText.style.display = '';
 					fullText.style.display  = 'none';
-					btn.textContent         = btn.dataset.lessLabel || 'Show less';
+					btn.textContent         = btn.dataset.moreLabel || 'Read more';
 					btn.setAttribute( 'aria-expanded', 'false' );
 				} else {
 					shortText.style.display = 'none';
 					fullText.style.display  = '';
-					btn.textContent         = btn.dataset.moreLabel || 'Show less';
+					btn.textContent         = btn.dataset.lessLabel || 'Show less';
 					btn.setAttribute( 'aria-expanded', 'true' );
 				}
 			} );

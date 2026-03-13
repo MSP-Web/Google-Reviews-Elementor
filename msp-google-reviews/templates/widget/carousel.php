@@ -48,7 +48,7 @@ defined( 'ABSPATH' ) || exit;
 	<button class="msp-arrow msp-arrow--next" aria-label="<?php esc_attr_e( 'Next review', 'msp-google-reviews' ); ?>">&#8250;</button>
 	<?php endif; ?>
 
-	<?php if ( count( $filtered ) > 1 ) : ?>
+	<?php if ( count( $filtered ) > 1 && 'yes' === ( $settings['show_dots'] ?? 'yes' ) ) : ?>
 	<div class="msp-carousel-dots" aria-hidden="true">
 		<?php foreach ( $filtered as $i => $_ ) : ?>
 		<span class="msp-dot <?php echo 0 === $i ? 'msp-dot--active' : ''; ?>"

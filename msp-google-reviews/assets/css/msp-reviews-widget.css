@@ -72,19 +72,28 @@
 	margin-bottom: 14px;
 }
 
+.msp-read-more-row {
+	margin-top: 8px;
+}
+
 .msp-read-more-toggle {
+	display: inline;
 	background: none;
 	border: none;
-	color: #4285F4;
+	color: #5f6b7a;
 	cursor: pointer;
-	font-size: 13px;
+	font-size: 12px;
 	padding: 0;
-	margin-left: 4px;
+	margin: 0;
 	text-decoration: underline;
+	text-underline-offset: 2px;
+	appearance: none;
+	-webkit-appearance: none;
+	font-weight: 400;
 }
 
 .msp-read-more-toggle:hover {
-	color: #1a5cd7;
+	color: #2f6ed4;
 }
 
 .msp-review-card__author {
