@@ -30,9 +30,12 @@ jobs:
           SAFE_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-')
           echo "safe_name=$SAFE_NAME" >> "$GITHUB_OUTPUT"
 
+      - name: Unpack zip for artifact upload
+        run: unzip -q "${{ steps.zip.outputs.path }}" -d unpacked/
+
       - name: Upload experimental build artifact
         uses: actions/upload-artifact@v4
         with:
           name: msp-google-reviews-experimental-${{ steps.branch.outputs.safe_name }}-${{ github.sha }}
-          path: ${{ steps.zip.outputs.path }}
+          path: unpacked/msp-google-reviews
           retention-days: 14
