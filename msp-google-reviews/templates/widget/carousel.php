@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 $msp_pages = array_chunk( $filtered, $reviews_per_cycle );
 ?>
 
-<div class="msp-reviews-widget"
+<div class="msp-reviews-widget <?php echo $reviews_per_cycle > 1 ? 'msp-reviews-widget--multi' : ''; ?>"
 	data-autoplay="<?php echo esc_attr( $autoplay ); ?>"
 	data-interval="<?php echo esc_attr( (string) $autoplay_interval ); ?>"
 >
