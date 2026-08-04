@@ -37,7 +37,7 @@
 .msp-carousel-page {
 	display: none;
 	gap: 16px;
-	align-items: flex-start;
+	align-items: stretch;
 }
 
 .msp-carousel-page--active {
@@ -54,7 +54,9 @@
    ============================================================ */
 
 .msp-review-card {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	padding: 24px 28px;
 	background-color: #ffffff;
 	border-radius: 8px;
