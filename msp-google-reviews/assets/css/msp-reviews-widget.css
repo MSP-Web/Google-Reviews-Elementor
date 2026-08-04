@@ -30,22 +30,33 @@
 	min-height: 140px;
 }
 
+.msp-carousel-page {
+	display: none;
+	gap: 16px;
+	align-items: flex-start;
+}
+
+.msp-carousel-page--active {
+	display: flex;
+}
+
+.msp-carousel-page .msp-review-card {
+	flex: 1 1 0;
+	min-width: 0;
+}
+
 /* ============================================================
    Review Card
    ============================================================ */
 
 .msp-review-card {
-	display: none;
+	display: block;
 	padding: 24px 28px;
 	background-color: #ffffff;
 	border-radius: 8px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	text-align: left;
 	box-sizing: border-box;
-}
-
-.msp-review-card--active {
-	display: block;
 }
 
 .msp-review-card__stars {
@@ -224,6 +235,24 @@
 }
 
 /* ============================================================
+   Grid Layout
+   ============================================================ */
+
+.msp-reviews-widget--grid {
+	max-width: 100%;
+}
+
+.msp-reviews-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.msp-reviews-grid .msp-review-card {
+	height: 100%;
+}
+
+/* ============================================================
    Fallback / Summary-only
    ============================================================ */
 
@@ -277,5 +306,13 @@
 
 	.msp-cta-buttons {
 		flex-direction: column;
+	}
+
+	.msp-carousel-page {
+		flex-direction: column;
+	}
+
+	.msp-reviews-grid {
+		grid-template-columns: 1fr;
 	}
 }

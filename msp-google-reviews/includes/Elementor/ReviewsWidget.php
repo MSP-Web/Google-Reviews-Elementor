@@ -53,6 +53,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->register_display_section();
 		$this->register_filter_section();
 		$this->register_carousel_section();
+		$this->register_grid_section();
 		$this->register_cta_section();
 		$this->register_style_section();
 	}
@@ -159,6 +160,26 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'layout_mode',
+			[
+				'label'   => __( 'Layout', 'msp-google-reviews' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'carousel' => [
+						'title' => __( 'Carousel', 'msp-google-reviews' ),
+						'icon'  => 'eicon-slides',
+					],
+					'grid'     => [
+						'title' => __( 'Grid', 'msp-google-reviews' ),
+						'icon'  => 'eicon-gallery-grid',
+					],
+				],
+				'default' => 'carousel',
+				'toggle'  => false,
+			]
+		);
+
+		$this->add_control(
 			'review_count',
 			[
 				'label'   => __( 'Number of Reviews', 'msp-google-reviews' ),
@@ -256,6 +277,20 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'reviews_per_cycle',
+			[
+				'label'       => __( 'Reviews Per Cycle', 'msp-google-reviews' ),
+				'type'        => \Elementor\Controls_Manager::NUMBER,
+				'default'     => 1,
+				'min'         => 1,
+				'max'         => 5,
+				'step'        => 1,
+				'description' => __( 'How many review cards are shown together per carousel slide.', 'msp-google-reviews' ),
+				'condition'   => [ 'layout_mode' => 'carousel' ],
+			]
+		);
+
+		$this->add_control(
 			'autoplay',
 			[
 				'label'        => __( 'Autoplay', 'msp-google-reviews' ),
@@ -264,6 +299,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'label_off'    => __( 'Off', 'msp-google-reviews' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
+				'condition'    => [ 'layout_mode' => 'carousel' ],
 			]
 		);
 
@@ -276,7 +312,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'min'        => 1000,
 				'max'        => 30000,
 				'step'       => 500,
-				'condition'  => [ 'autoplay' => 'yes' ],
+				'condition'  => [ 'autoplay' => 'yes', 'layout_mode' => 'carousel' ],
 			]
 		);
 
@@ -289,6 +325,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'label_off'    => __( 'Hide', 'msp-google-reviews' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
+				'condition'    => [ 'layout_mode' => 'carousel' ],
 			]
 		);
 
@@ -301,6 +338,61 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				'label_off'    => __( 'Hide', 'msp-google-reviews' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
+				'condition'    => [ 'layout_mode' => 'carousel' ],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	// =========================================================================
+	// SECTION: Grid
+	// =========================================================================
+
+	private function register_grid_section(): void {
+		$this->start_controls_section(
+			'section_grid',
+			[
+				'label'     => __( 'Grid', 'msp-google-reviews' ),
+				'tab'       => \Elementor\Controls_Manager::TAB_CONTENT,
+				'condition' => [ 'layout_mode' => 'grid' ],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_columns',
+			[
+				'label'     => __( 'Columns', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'default'   => 3,
+				'min'       => 1,
+				'max'       => 6,
+				'step'      => 1,
+				'selectors' => [
+					'{{WRAPPER}} .msp-reviews-grid' => 'grid-template-columns: repeat({{VALUE}}, 1fr);',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_gap',
+			[
+				'label'      => __( 'Gap', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 60,
+					],
+				],
+				'default'    => [
+					'size' => 20,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-reviews-grid' => 'gap: {{SIZE}}{{UNIT}};',
+				],
 			]
 		);
 
@@ -947,9 +1039,16 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$autoplay_interval = absint( $settings['autoplay_interval'] ?? 5000 );
 		$autoplay_interval = max( 1000, min( 30000, $autoplay_interval ) );
 
+		$reviews_per_cycle = absint( $settings['reviews_per_cycle'] ?? 1 );
+		$reviews_per_cycle = max( 1, min( 5, $reviews_per_cycle ) );
+
+		$layout_mode = ( 'grid' === ( $settings['layout_mode'] ?? 'carousel' ) ) ? 'grid' : 'carousel';
+
 		// Render
 		if ( empty( $filtered ) ) {
 			include MSP_GOOGLE_REVIEWS_DIR . 'templates/widget/summary-only.php';
+		} elseif ( 'grid' === $layout_mode ) {
+			include MSP_GOOGLE_REVIEWS_DIR . 'templates/widget/grid.php';
 		} else {
 			include MSP_GOOGLE_REVIEWS_DIR . 'templates/widget/carousel.php';
 		}
