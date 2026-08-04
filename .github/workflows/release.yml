@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build release zip
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Determine zip filename
+        id: zip
+        run: |
+          ZIP_FILE=$(ls msp-google-reviews-v*.zip)
+          echo "path=$ZIP_FILE" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$ZIP_FILE")" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: ${{ steps.zip.outputs.path }}
+          fail_on_unmatched_files: true
