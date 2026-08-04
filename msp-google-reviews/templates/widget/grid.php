@@ -1,9 +1,10 @@
 <?php
 /**
- * Widget Template: Carousel
+ * Widget Template: Grid
  *
- * Renders the full carousel with review cards, navigation, and aggregate meta.
- * All data is pre-escaped by PresenterService before reaching this template.
+ * Renders review cards in a static CSS grid (no carousel behavior).
+ * Column count and gap are controlled entirely via Elementor control
+ * selectors on .msp-reviews-grid — no PHP-side layout math needed.
  *
  * Available variables:
  *   $filtered        array   Filtered review objects (DB objects)
@@ -12,58 +13,25 @@
  *   $settings        array   Elementor widget settings
  *   $read_more_url   string  Safe escaped URL
  *   $write_review_url string Safe escaped URL
- *   $autoplay        string  'true' | 'false'
- *   $autoplay_interval int   Milliseconds
- *   $reviews_per_cycle int  Number of review cards shown per slide (1–5)
  *
  * @package MSPGoogleReviews
  */
 
 defined( 'ABSPATH' ) || exit;
-
-// Group reviews into pages of $reviews_per_cycle cards each — one page = one slide.
-$msp_pages = array_chunk( $filtered, $reviews_per_cycle );
 ?>
 
-<div class="msp-reviews-widget <?php echo $reviews_per_cycle > 1 ? 'msp-reviews-widget--multi' : ''; ?>"
-	data-autoplay="<?php echo esc_attr( $autoplay ); ?>"
-	data-interval="<?php echo esc_attr( (string) $autoplay_interval ); ?>"
->
+<div class="msp-reviews-widget msp-reviews-widget--grid">
 
-	<?php if ( 'yes' === ( $settings['show_arrows'] ?? 'yes' ) ) : ?>
-	<button class="msp-arrow msp-arrow--prev" aria-label="<?php esc_attr_e( 'Previous review', 'msp-google-reviews' ); ?>">&#8249;</button>
-	<?php endif; ?>
-
-	<div class="msp-carousel-track">
-		<?php foreach ( $msp_pages as $page_index => $page_reviews ) : ?>
-		<div class="msp-carousel-page <?php echo 0 === $page_index ? 'msp-carousel-page--active' : ''; ?>"
-			data-index="<?php echo esc_attr( (string) $page_index ); ?>"
-			aria-hidden="<?php echo 0 === $page_index ? 'false' : 'true'; ?>"
-		>
-			<?php foreach ( $page_reviews as $review ) :
-				$review_data = $presenter->prepare_review( $review );
-				$text_data   = $presenter->prepare_review_text( (string) $review->review_text );
-			?>
-			<div class="msp-review-card">
-				<?php include __DIR__ . '/review-card.php'; ?>
-			</div>
-			<?php endforeach; ?>
+	<div class="msp-reviews-grid">
+		<?php foreach ( $filtered as $review ) :
+			$review_data = $presenter->prepare_review( $review );
+			$text_data   = $presenter->prepare_review_text( (string) $review->review_text );
+		?>
+		<div class="msp-review-card">
+			<?php include __DIR__ . '/review-card.php'; ?>
 		</div>
 		<?php endforeach; ?>
 	</div>
-
-	<?php if ( 'yes' === ( $settings['show_arrows'] ?? 'yes' ) ) : ?>
-	<button class="msp-arrow msp-arrow--next" aria-label="<?php esc_attr_e( 'Next review', 'msp-google-reviews' ); ?>">&#8250;</button>
-	<?php endif; ?>
-
-	<?php if ( count( $msp_pages ) > 1 && 'yes' === ( $settings['show_dots'] ?? 'yes' ) ) : ?>
-	<div class="msp-carousel-dots" aria-hidden="true">
-		<?php foreach ( $msp_pages as $i => $_ ) : ?>
-		<span class="msp-dot <?php echo 0 === $i ? 'msp-dot--active' : ''; ?>"
-			data-index="<?php echo esc_attr( (string) $i ); ?>"></span>
-		<?php endforeach; ?>
-	</div>
-	<?php endif; ?>
 
 	<?php if ( 'yes' === ( $settings['show_aggregate'] ?? 'yes' ) ) : ?>
 	<div class="msp-aggregate">
@@ -106,4 +74,4 @@ $msp_pages = array_chunk( $filtered, $reviews_per_cycle );
 		<?php endif; ?>
 	</div>
 
-</div><!-- .msp-reviews-widget -->
+</div><!-- .msp-reviews-widget--grid -->

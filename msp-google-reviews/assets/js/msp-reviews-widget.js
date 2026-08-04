@@ -20,11 +20,11 @@
 	// =========================================================================
 
 	function initCarousel( widget ) {
-		var cards    = widget.querySelectorAll( '.msp-review-card' );
+		var pages    = widget.querySelectorAll( '.msp-carousel-page' );
 		var dots     = widget.querySelectorAll( '.msp-dot' );
 		var prevBtn  = widget.querySelector( '.msp-arrow--prev' );
 		var nextBtn  = widget.querySelector( '.msp-arrow--next' );
-		var total    = cards.length;
+		var total    = pages.length;
 		var current  = 0;
 		var timer    = null;
 
@@ -35,10 +35,10 @@
 		interval     = Math.max( 1000, Math.min( 30000, interval ) );
 
 		function showCard( index ) {
-			cards.forEach( function ( card, i ) {
+			pages.forEach( function ( page, i ) {
 				var active = i === index;
-				card.classList.toggle( 'msp-review-card--active', active );
-				card.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
+				page.classList.toggle( 'msp-carousel-page--active', active );
+				page.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
 			} );
 
 			dots.forEach( function ( dot, i ) {
