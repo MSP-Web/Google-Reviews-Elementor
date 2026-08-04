@@ -205,3 +205,18 @@ Enable "Delete all plugin data on uninstall" in Settings before deleting the plu
 
 For internal support, contact: **MSP WebOps**
 Plugin maintained by: **Joshua Garza**
+
+---
+
+## Changelog
+
+### [1.0.0] - 2026-08-04
+- First tagged production release
+- Added .gitignore and removed OS/build artifacts from version control
+- Added build.sh for reproducible, correctly-versioned release zips
+- Added .gitattributes to enforce LF line endings for shell scripts
+- Added GitHub Actions workflow to build and publish a release automatically
+  on tag push, with auto-generated release notes
+- Added GitHub-based auto-update support (Plugin Update Checker), so
+  installed sites can check for and install new versions directly from
+  wp-admin
