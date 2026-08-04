@@ -87,14 +87,14 @@ class Bootstrap {
 			'msp-google-reviews',
 			MSP_GOOGLE_REVIEWS_URL . 'assets/css/msp-reviews-widget.css',
 			[],
-			MSP_GOOGLE_REVIEWS_VERSION
+			self::asset_version( 'assets/css/msp-reviews-widget.css' )
 		);
 
 		wp_enqueue_script(
 			'msp-google-reviews',
 			MSP_GOOGLE_REVIEWS_URL . 'assets/js/msp-reviews-widget.js',
 			[],
-			MSP_GOOGLE_REVIEWS_VERSION,
+			self::asset_version( 'assets/js/msp-reviews-widget.js' ),
 			true // load in footer
 		);
 	}
@@ -112,7 +112,7 @@ class Bootstrap {
 			'msp-google-reviews',
 			MSP_GOOGLE_REVIEWS_URL . 'assets/js/msp-reviews-widget.js',
 			[],
-			MSP_GOOGLE_REVIEWS_VERSION,
+			self::asset_version( 'assets/js/msp-reviews-widget.js' ),
 			true
 		);
 
@@ -121,7 +121,7 @@ class Bootstrap {
 			'msp-google-reviews-editor',
 			MSP_GOOGLE_REVIEWS_URL . 'assets/js/msp-reviews-editor.js',
 			[ 'jquery' ],
-			MSP_GOOGLE_REVIEWS_VERSION,
+			self::asset_version( 'assets/js/msp-reviews-editor.js' ),
 			true
 		);
 
@@ -135,5 +135,25 @@ class Bootstrap {
 				'saveLocationNonce' => wp_create_nonce( 'msp_save_location' ),
 			]
 		);
+	}
+
+	/**
+	 * Resolve the cache-busting version string for an asset.
+	 *
+	 * In debug mode, uses the file's modification time so edits are picked
+	 * up immediately without a manual version bump. In production, falls
+	 * back to the stable plugin version for normal release-based caching.
+	 *
+	 * @param string $relative_path Path relative to the plugin root.
+	 * @return string
+	 */
+	private static function asset_version( string $relative_path ): string {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$file = MSP_GOOGLE_REVIEWS_DIR . $relative_path;
+			if ( file_exists( $file ) ) {
+				return (string) filemtime( $file );
+			}
+		}
+		return MSP_GOOGLE_REVIEWS_VERSION;
 	}
 }
