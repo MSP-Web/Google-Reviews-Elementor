@@ -210,6 +210,12 @@ Plugin maintained by: **Joshua Garza**
 
 ## Changelog
 
+### [1.1.0] - 2026-08-04
+- Added Grid layout mode as an alternative to the carousel
+- Added configurable "Reviews Per Cycle" for showing multiple reviews per carousel slide
+- Equal-height cards with pinned top/bottom layout in both display modes
+- Dev-mode cache-busting improvement for local testing
+
 ### [1.0.0] - 2026-08-04
 - First tagged production release
 - Added .gitignore and removed OS/build artifacts from version control

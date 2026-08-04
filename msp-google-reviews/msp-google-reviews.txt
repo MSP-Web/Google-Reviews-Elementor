@@ -1,6 +1,6 @@
 Plugin Name:    MSP Google Reviews Widget
 Plugin Slug:    msp-google-reviews
-Version:        1.0.0
+Version:        1.1.0
 Author:         Joshua Garza
 Organization:   MSP WebOps
 Requires WP:    6.0
