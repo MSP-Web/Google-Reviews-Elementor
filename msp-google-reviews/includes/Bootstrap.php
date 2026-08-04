@@ -17,6 +17,7 @@ use MSPGoogleReviews\AJAX\SearchPlacesHandler;
 use MSPGoogleReviews\AJAX\RefreshHandler;
 use MSPGoogleReviews\Service\ReviewSyncService;
 use MSPGoogleReviews\Schema\SchemaInstaller;
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 class Bootstrap {
 
@@ -26,6 +27,10 @@ class Bootstrap {
 	public static function init(): void {
 		// Run schema check on every load in case of manual file deployment
 		SchemaInstaller::install();
+
+		// GitHub-based update checker — must run unconditionally (not admin-only)
+		// so WP-CLI, health checks, and multisite tooling see it too.
+		self::init_update_checker();
 
 		// Admin interface
 		if ( is_admin() ) {
@@ -47,6 +52,21 @@ class Bootstrap {
 
 		// Enqueue editor assets inside Elementor editor
 		add_action( 'elementor/editor/after_enqueue_scripts', [ self::class, 'enqueue_editor_assets' ] );
+	}
+
+	/**
+	 * Set up the GitHub Releases-based update checker.
+	 */
+	public static function init_update_checker(): void {
+		require_once MSP_GOOGLE_REVIEWS_DIR . 'includes/vendor/plugin-update-checker/plugin-update-checker.php';
+
+		$updateChecker = PucFactory::buildUpdateChecker(
+			'https://github.com/MSP-Web/Google-Reviews-Elementor/',
+			MSP_GOOGLE_REVIEWS_FILE,
+			'msp-google-reviews'
+		);
+		$updateChecker->setBranch( 'main' );
+		$updateChecker->getVcsApi()->enableReleaseAssets( '/\.zip($|[?&#])/i' );
 	}
 
 	/**
