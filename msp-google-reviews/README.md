@@ -210,6 +210,14 @@ Plugin maintained by: **Joshua Garza**
 
 ## Changelog
 
+### [1.2.0] - 2026-08-05
+- Added border, border radius, and box shadow styling for review cards
+- Added border, border radius, vertical offset, padding, and independent glyph size/weight controls for navigation arrows
+- Read More Reviews and Write a Review buttons can now be styled completely independently
+- Fixed box-shadow clipping on review cards
+- Reorganized the Style tab into collapsible accordion sections
+- Automated README version syncing on every tagged release
+
 ### [1.1.0] - 2026-08-04
 - Added Grid layout mode as an alternative to the carousel
 - Added configurable "Reviews Per Cycle" for showing multiple reviews per carousel slide
