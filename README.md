@@ -1,6 +1,6 @@
 # MSP Google Reviews Widget
 
-**Version:** 1.0.0
+**Version:** 1.2.0
 **Author:** Joshua Garza
 **Organization:** MSP WebOps
 **Requires WordPress:** 6.0+
