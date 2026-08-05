@@ -55,7 +55,13 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->register_carousel_section();
 		$this->register_grid_section();
 		$this->register_cta_section();
-		$this->register_style_section();
+		$this->register_style_cards_section();
+		$this->register_style_stars_section();
+		$this->register_style_meta_section();
+		$this->register_style_cta_section();
+		$this->register_style_read_more_section();
+		$this->register_style_arrows_section();
+		$this->register_style_dots_section();
 	}
 
 	// =========================================================================
@@ -494,20 +500,12 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 	// SECTION: Style
 	// =========================================================================
 
-	private function register_style_section(): void {
+	private function register_style_cards_section(): void {
 		$this->start_controls_section(
-			'section_style',
-			[
-				'label' => __( 'Style', 'msp-google-reviews' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'style_heading_cards',
+			'section_style_cards',
 			[
 				'label' => __( 'Cards', 'msp-google-reviews' ),
-				'type'  => \Elementor\Controls_Manager::HEADING,
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -599,12 +597,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_stars',
+		$this->end_controls_section();
+	}
+
+	private function register_style_stars_section(): void {
+		$this->start_controls_section(
+			'section_style_stars',
 			[
-				'label'     => __( 'Rating Stars', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'Rating Stars', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -673,12 +674,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_meta',
+		$this->end_controls_section();
+	}
+
+	private function register_style_meta_section(): void {
+		$this->start_controls_section(
+			'section_style_meta',
 			[
-				'label'     => __( 'Meta Section', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'Meta Section', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -730,12 +734,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_cta',
+		$this->end_controls_section();
+	}
+
+	private function register_style_cta_section(): void {
+		$this->start_controls_section(
+			'section_style_cta',
 			[
-				'label'     => __( 'CTA Buttons', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'CTA Buttons', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -1045,12 +1052,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_read_more',
+		$this->end_controls_section();
+	}
+
+	private function register_style_read_more_section(): void {
+		$this->start_controls_section(
+			'section_style_read_more_link',
 			[
-				'label'     => __( 'Read More Link', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'Read More Link', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -1087,12 +1097,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_navigation',
+		$this->end_controls_section();
+	}
+
+	private function register_style_arrows_section(): void {
+		$this->start_controls_section(
+			'section_style_arrows',
 			[
-				'label'     => __( 'Navigation Arrows', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'Navigation Arrows', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -1273,12 +1286,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'style_heading_dots',
+		$this->end_controls_section();
+	}
+
+	private function register_style_dots_section(): void {
+		$this->start_controls_section(
+			'section_style_dots',
 			[
-				'label'     => __( 'Pagination Dots', 'msp-google-reviews' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'separator' => 'before',
+				'label' => __( 'Pagination Dots', 'msp-google-reviews' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
