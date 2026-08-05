@@ -1109,7 +1109,59 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .msp-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; font-size: calc({{SIZE}}{{UNIT}} * 0.55);',
+					'{{WRAPPER}} .msp-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrow_glyph_size',
+			[
+				'label'      => __( 'Arrow Glyph Size', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 10,
+						'max' => 40,
+					],
+				],
+				'default'    => [
+					'size' => 20,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-arrow' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'arrow_glyph_weight',
+			[
+				'label'     => __( 'Arrow Glyph Weight', 'msp-google-reviews' ),
+				'type'      => \Elementor\Controls_Manager::SELECT,
+				'options'   => [
+					'400' => __( 'Normal', 'msp-google-reviews' ),
+					'500' => __( 'Medium', 'msp-google-reviews' ),
+					'700' => __( 'Bold', 'msp-google-reviews' ),
+					'900' => __( 'Extra Bold', 'msp-google-reviews' ),
+				],
+				'default'   => '400',
+				'selectors' => [
+					'{{WRAPPER}} .msp-arrow' => 'font-weight: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrow_padding',
+			[
+				'label'      => __( 'Padding', 'msp-google-reviews' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em' ],
+				'selectors'  => [
+					'{{WRAPPER}} .msp-arrow' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
