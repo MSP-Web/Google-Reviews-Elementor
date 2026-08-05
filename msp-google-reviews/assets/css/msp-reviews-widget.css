@@ -30,7 +30,6 @@
 
 .msp-carousel-track {
 	position: relative;
-	overflow: hidden;
 	min-height: 140px;
 }
 
@@ -124,12 +123,11 @@
 .msp-arrow {
 	position: absolute;
 	top: 50%;
-	transform: translateY(-50%);
+	box-sizing: border-box;
 	background: rgba(255, 255, 255, 0.9);
-	border: 1px solid #dddddd;
-	border-radius: 50%;
 	width: 36px;
 	height: 36px;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 20px;
 	line-height: 1;
 	cursor: pointer;
@@ -225,7 +223,8 @@
 	border-radius: 4px;
 	font-size: 14px;
 	font-weight: 500;
-	transition: opacity 0.2s;
+	transition-property: opacity, color, background-color;
+	transition-duration: 0.2s;
 	border: none;
 	cursor: pointer;
 }
@@ -234,10 +233,6 @@
 	opacity: 0.88;
 	color: #ffffff;
 	text-decoration: none;
-}
-
-.msp-cta-btn--write-review {
-	background-color: #34A853;
 }
 
 /* ============================================================
